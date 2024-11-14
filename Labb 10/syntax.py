@@ -40,7 +40,7 @@ class Formel():
     def readMolekyl(self):
         mol = self.readGroup()
         if self.q.peek() != ".":                                            # Om det inte är slutet på molekylen
-            mol.next = self.readMolekyl()
+            mol.next = self.readMolekyl()                                   # NOTE
         if self.brackets != 0:                                              # Om det inte är lika många vänster- som högerparenteser
             raise Syntaxfel("Saknad högerparentes vid radslutet ")
         return mol
@@ -57,8 +57,9 @@ class Formel():
         elif self.q.peek() == "(":                                          # Om det är en vänsterparentes
             self.brackets += 1
             self.q.dequeue()
+            # while self.q.peek() != "." and self.q.peek() != ")":
             while self.q.peek() != "." and self.q.peek() != ")":
-               rutan.down = self.readMolekyl()
+               rutan.down = self.readMolekyl()                              # NOTE
 
         elif self.q.peek() == ")" and self.brackets != 0:                   # Om det är en högerparentes
             self.brackets -= 1
@@ -97,14 +98,14 @@ class Formel():
         letter = self.q.dequeue()
 
         if letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-            return(letter)
+            return letter
         raise Syntaxfel("Saknad stor bokstav vid radslutet " + letter)
 
 
     def readLetter(self):
         if self.q.peek() in "abcdefghijklmnopqrstuvwxyz":
             letter = self.q.dequeue()
-            return(letter)
+            return letter
         return
 
 
@@ -126,7 +127,6 @@ def addMolekyl(molecule):
         q.enqueue(character)
     q.enqueue(".")
     formel = Formel(q)
-    print(formel)
     return formel
 
 
