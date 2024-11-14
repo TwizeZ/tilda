@@ -34,8 +34,7 @@ class Formel():
 
 
     def readFormel(self):
-        self.readMolekyl()
-        return "Formeln är syntaktiskt korrekt"
+        return self.readMolekyl()
 
 
     def readMolekyl(self):
@@ -127,13 +126,16 @@ def addMolekyl(molecule):
         q.enqueue(character)
     q.enqueue(".")
     formel = Formel(q)
+    print(formel)
     return formel
 
 
 def kollaMolekyl(molekyl):
     formel = addMolekyl(molekyl)
+    
     try:
         result = formel.readFormel()
+        print("Formeln är syntaktiskt korrekt")
         return result
     except Syntaxfel as fel:
         kvar = ""
@@ -145,13 +147,12 @@ def kollaMolekyl(molekyl):
 
 
 def main():
-    mg = Molgrafik()                                # Flytta?
-
+    mg = Molgrafik() 
     molekyl = input()
     while not molekyl == "#":
         resultat = kollaMolekyl(molekyl)
         print(resultat)
-        mg.show(addMolekyl(molekyl).readFormel())
+        mg.show(resultat)
         molekyl = input()
 
 
