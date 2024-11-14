@@ -1,0 +1,21 @@
+Frågor:
+
+Vad representerar parametern "stmt"?
+    Representerar den kod (statement) som ska mätas
+
+Vad representerar parametern "number"?
+    Antal gånger koden i stmt ska köras under mätningen.
+
+Vad är det "timeit" tar tid på?
+    Timeit mäter exekveringstiden för koden i stmt, under ett visst antal upprepningar.
+
+Vad skrivs ut av ett anrop av "timeit"?
+    Den genomsnittliga exekveringstiden (i sekunder) för ett anrop av koden i stmt över de angivna upprepningarna (number).
+
+
+
+
+Analys:
+
+Hashning är mycket mer effektiv än linjärsökning, då den hittar målet direkt tack vare hashningstabellen.
+Quicksort är mycket snabbare än bubblesort, då tidskomplexiteten för quicksort (O(x*ln(x))) är mer effektiv än bubblesort (O(n^2)).

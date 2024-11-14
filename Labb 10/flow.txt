@@ -1,0 +1,7 @@
+readFormel
+  └── readMolekyl
+        ├── readGroup
+        │     ├── readAtom
+        │     │     └── readLETTER
+        │     └── readMolekyl (if nested group)
+        └── readMolekyl (if more groups)
