@@ -187,12 +187,12 @@ def kollaMolekyl(molekyl):
 
 def main():
     mg = Molgrafik() 
-    molekyl = input()
+    molekyl = input("Molekyl: ")
     while not molekyl == "#":
         mol_ruta = kollaMolekyl(molekyl)
         print(f"Vikt: {weight(mol_ruta)}")
         mg.show(mol_ruta)
-        molekyl = input()
+        molekyl = input("\nMolekyl: ")
     print()
 
 
