@@ -35,17 +35,17 @@ class Molgrafik:
         ruta.pack(side=LEFT)
         atom=Frame(ruta,bg="yellow")
         atom.pack(side=LEFT)
-        Label(atom,text=namn,font=self.stor,bg="yellow").pack()
+        Label(atom,text=namn,font=self.stor,bg="yellow", fg="black").pack()
         Frame(atom, height=5, bg="yellow").pack()
         if num>1:
-            Label(ruta, text=str(num),font=self.liten,bg="yellow").pack(side=BOTTOM)
+            Label(ruta, text=str(num),font=self.liten,bg="yellow",fg="black").pack(side=BOTTOM)
 
     def streck(self,master):
         """ Ritar ett streck. Parametrar: master (grafikfonstret) """
         strecket=Frame(master)
         strecket.pack(side=LEFT,fill=BOTH,expand=True)
         Frame(strecket,bg="white",height=20).pack(fill=X)
-        Frame(strecket,bg="red",height=4,width=25).pack(fill=X)
+        Frame(strecket,bg="blue",height=4,width=25).pack(fill=X)
         Frame(strecket,bg="white").pack(fill=BOTH,expand=1)
 
     def stolpe(self,master):
@@ -53,7 +53,7 @@ class Molgrafik:
         hela=self.ram(master,TOP)
         stolpen=self.ram(hela,LEFT)
         Frame(stolpen,bg="white",width=15).pack(side=LEFT)
-        Frame(stolpen,bg="red",width=4,height=25).pack(side=LEFT)
+        Frame(stolpen,bg="blue",width=4,height=25).pack(side=LEFT)
         Frame(hela,bg="white").pack(fill=BOTH,expand=1)
 
     def picture(self,master,p):
