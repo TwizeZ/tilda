@@ -8,6 +8,7 @@ Labb 10
 
 from linkedQFile import LinkedQ
 from molgrafik import *
+from hashtest import *
 
 
 class Syntaxfel(Exception):
@@ -39,31 +40,50 @@ class Formel():
 
     def readMolekyl(self):
         mol = self.readGroup()
-        if self.q.peek() != ".":                                            # Om det inte är slutet på molekylen
-            mol.next = self.readMolekyl()                                   # NOTE
-        if self.brackets != 0:                                              # Om det inte är lika många vänster- som högerparenteser
+        current = mol  # Start with the first group
+
+        while self.q.peek() not in [".", ")"]:
+            # Read the next group and chain it to the current molecule
+            next_mol = self.readGroup()
+            current.next = next_mol  # Link to the next group
+            current = next_mol       # Move to the newly added group
+
+        if self.q.peek() == ")":
+            return mol  # Ends the current molecule if ")" is reached
+
+        if self.brackets != 0:
             raise Syntaxfel("Saknad högerparentes vid radslutet ")
-        return mol
         
+        return mol
+
 
     def readGroup(self):
         rutan = Ruta()
 
-        if self.q.peek().isalpha():                                         # Om det är en bokstav
+        if self.q.peek().isalpha():  # If the group starts with an atom
             rutan.atom = self.readAtom()
-            if self.q.peek().isdigit():                                     # Om det kommer en siffra efter bokstaven
+            if self.q.peek().isdigit():  # Check for numeric subscript
                 rutan.num = self.readNum()
 
-        elif self.q.peek() == "(":                                          # Om det är en vänsterparentes
+        elif self.q.peek() == "(":  # If the group starts with "("
             self.brackets += 1
-            self.q.dequeue()
-            # while self.q.peek() != "." and self.q.peek() != ")":
-            while self.q.peek() != "." and self.q.peek() != ")":
-               rutan.down = self.readMolekyl()                              # NOTE
+            self.q.dequeue()  # Remove "("
+            rutan.down = self.readMolekyl()  # Process the nested molecule
 
-        elif self.q.peek() == ")" and self.brackets != 0:                   # Om det är en högerparentes
+            if self.q.peek() != ")":
+                raise Syntaxfel("Saknad högerparentes vid radslutet ")
+
             self.brackets -= 1
-            self.q.dequeue()
+            self.q.dequeue()  # Remove ")"
+            
+            if self.q.peek().isdigit():
+                rutan.num = self.readNum()  # Get the multiplier for the nested group
+            else:
+                raise Syntaxfel("Saknad siffra vid radslutet ")
+
+        elif self.q.peek() == ")" and self.brackets > 0:  # Closing bracket for nested group
+            self.brackets -= 1
+            self.q.dequeue()  # Remove ")"
             if self.q.peek().isdigit():
                 rutan.num = self.readNum()
             else:
@@ -71,8 +91,8 @@ class Formel():
 
         else:
             raise Syntaxfel("Felaktig gruppstart vid radslutet ")
-        return rutan                                                        # Returnera i if-satserna? Eller någon annanstans?
-
+        
+        return rutan
 
     def readAtom(self):
         atom = self.readLETTER()
@@ -121,6 +141,26 @@ class Formel():
             raise Syntaxfel("För litet tal vid radslutet ")
 
 
+
+def weight(mol):
+    atom_list = skapaAtomlista()
+    atom_table = lagraHashtabell(atom_list)
+
+    if mol.down is not None:    # Om rutan man är på är en parantes, ta det nedanför gånger siffran
+        vikt = weight(mol.down) * mol.num
+
+    else:
+        if mol.num is not None:     # Om siffran är större än 1
+            vikt = atom_table[mol.atom].vikt * mol.num
+        else:
+            vikt = atom_table[mol.atom].vikt
+
+    if mol.next is not None:    # Om det finns något på next, lägg till den vikten
+        vikt += weight(mol.next)
+
+    return vikt
+
+
 def addMolekyl(molecule):
     q = LinkedQ()
     for character in molecule:
@@ -151,9 +191,10 @@ def main():
     molekyl = input()
     while not molekyl == "#":
         resultat = kollaMolekyl(molekyl)
-        print(resultat)
+        # print(weight(resultat))
         mg.show(resultat)
         molekyl = input()
+    print()
 
 
 if __name__ == "__main__":
