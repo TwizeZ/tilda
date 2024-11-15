@@ -1,5 +1,6 @@
 from linkedQFile import LinkedQ
 from molgrafik import *
+from hashtest import *
 
 class Syntaxfel(Exception):
     pass
