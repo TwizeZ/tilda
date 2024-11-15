@@ -22,7 +22,7 @@ class Formel():
 
 
     def isAtom(self, atom):
-        atoms = """H   He  Li  Be  B   C   N   O   F   Ne  Na  Mg  Al  Si  P   S   Cl  Ar  K   Ca  Sc  Ti  V   Cr
+        atoms = """ H   He  Li  Be  B   C   N   O   F   Ne  Na  Mg  Al  Si  P   S   Cl  Ar  K   Ca  Sc  Ti  V   Cr
                     Mn  Fe  Co  Ni  Cu  Zn  Ga  Ge  As  Se  Br  Kr  Rb  Sr  Y   Zr  Nb  Mo  Tc  Ru  Rh  Pd  Ag  Cd
                     In  Sn  Sb  Te  I   Xe  Cs  Ba  La  Ce  Pr  Nd  Pm  Sm  Eu  Gd  Tb  Dy  Ho  Er  Tm  Yb  Lu  Hf
                     Ta  W   Re  Os  Ir  Pt  Au  Hg  Tl  Pb  Bi  Po  At  Rn  Fr  Ra  Ac  Th  Pa  U   Np  Pu  Am  Cm
@@ -39,8 +39,8 @@ class Formel():
 
 
     def readMolekyl(self):
-        mol = self.readGroup()
-        current = mol  # Start with the first group
+        mol_ruta = self.readGroup()
+        current = mol_ruta  # Start with the first group
 
         while self.q.peek() not in [".", ")"]:
             # Read the next group and chain it to the current molecule
@@ -49,12 +49,12 @@ class Formel():
             current = next_mol       # Move to the newly added group
 
         if self.q.peek() == ")":
-            return mol  # Ends the current molecule if ")" is reached
+            return mol_ruta  # Ends the current molecule if ")" is reached
 
         if self.brackets != 0:
             raise Syntaxfel("Saknad högerparentes vid radslutet ")
         
-        return mol
+        return mol_ruta
 
 
     def readGroup(self):
@@ -141,7 +141,6 @@ class Formel():
             raise Syntaxfel("För litet tal vid radslutet ")
 
 
-
 def weight(mol):
     atom_list = skapaAtomlista()
     atom_table = lagraHashtabell(atom_list)
@@ -174,9 +173,9 @@ def kollaMolekyl(molekyl):
     formel = addMolekyl(molekyl)
     
     try:
-        result = formel.readFormel()
+        mol_ruta = formel.readFormel()
         print("Formeln är syntaktiskt korrekt")
-        return result
+        return mol_ruta
     except Syntaxfel as fel:
         kvar = ""
         while not formel.q.isEmpty():
@@ -190,9 +189,9 @@ def main():
     mg = Molgrafik() 
     molekyl = input()
     while not molekyl == "#":
-        resultat = kollaMolekyl(molekyl)
-        # print(weight(resultat))
-        mg.show(resultat)
+        mol_ruta = kollaMolekyl(molekyl)
+        print(f"Vikt: {weight(mol_ruta)}")
+        mg.show(mol_ruta)
         molekyl = input()
     print()
 

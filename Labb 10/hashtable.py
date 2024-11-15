@@ -57,3 +57,9 @@ class Hashtable():
         return hash_value
     
 
+    def __getitem__(self, nyckel):
+        return self.search(nyckel)
+    
+
+    def __setitem__(self, nyckel, data):
+        self.store(nyckel, data)
