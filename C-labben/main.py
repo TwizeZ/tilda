@@ -69,8 +69,8 @@ def main(file_path):
 
 if __name__ == "__main__":
     print()
-    # main(data_file1)
-    # main(data_file2)
-    # main(data_file3)
-    # main(data_file4)
+    main(data_file1)
+    main(data_file2)
+    main(data_file3)
+    main(data_file4)
     main(data_file5)
